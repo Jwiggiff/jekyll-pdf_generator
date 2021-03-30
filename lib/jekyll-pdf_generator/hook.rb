@@ -19,19 +19,21 @@ end
 
 Jekyll::Hooks.register :pages, :post_render do |page|
   if page.data["pdf"] == true
-    path = File.expand_path __dir__
+    path = File.expand_path __dir__ + "/generated_files"
+
+    Dir.mkdir(path) unless Dir.exists? path
 
     Puppeteer.launch() do |browser|
       browser_page = browser.pages.first || browser.new_page
       browser_page.set_content(page.output, wait_until: "networkidle0")
       browser_page.pdf(
-          path: "#{path}/generated_files/#{page.basename}.pdf",
+          path: "#{path}/#{page.basename}.pdf",
           format: "letter",
           margin: { top: "1cm", left: "1cm", right: "1cm", bottom: "1cm" },
         )
     end
 
-    page.site.static_files << Jekyll::PDF.new(page.site, "#{path}/generated_files/", page.dir, "#{page.basename}.pdf")
+    page.site.static_files << Jekyll::PDF.new(page.site, "#{path}/", page.dir, "#{page.basename}.pdf")
     page.site.pages.delete(page)
   end
 end
