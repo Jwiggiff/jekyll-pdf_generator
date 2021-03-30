@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "jekyll", "~> 4.1"
-  spec.add_dependency "puppeteer-ruby", "~> 0.31.1"
+  spec.add_dependency "puppeteer-ruby", "~> 0.31.5"
 end
