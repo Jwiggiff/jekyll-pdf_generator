@@ -23,7 +23,9 @@ Jekyll::Hooks.register :pages, :post_render do |page|
 
     Dir.mkdir(path) unless Dir.exists? path
 
-    Puppeteer.launch() do |browser|
+    Puppeteer.launch(
+      executable_path: ENV['PUPPETEER_EXECUTABLE_PATH']
+    ) do |browser|
       browser_page = browser.pages.first || browser.new_page
       browser_page.set_content(page.output, wait_until: "networkidle0")
       # puts "#{path}/#{page.basename}.pdf"
