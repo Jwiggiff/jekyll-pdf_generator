@@ -26,6 +26,7 @@ Jekyll::Hooks.register :pages, :post_render do |page|
     Puppeteer.launch() do |browser|
       browser_page = browser.pages.first || browser.new_page
       browser_page.set_content(page.output, wait_until: "networkidle0")
+      # puts "#{path}/#{page.basename}.pdf"
       browser_page.pdf(
           path: "#{path}/#{page.basename}.pdf",
           format: "letter",
